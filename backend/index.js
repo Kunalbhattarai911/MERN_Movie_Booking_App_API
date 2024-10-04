@@ -26,14 +26,17 @@ app.listen(PORT, async () => {
 });
 
 app.get("/test-db", async (req, res) => {
-  try {
-    await mongoose.connection.db.admin().ping();
-    res.json({ message: "Database is connected!" });
-  } catch (error) {
-    res.status(500).json({ message: "Database connection failed!", error: error.message });
+  if (mongoose.connection.readyState === 1) {
+    try {
+      await mongoose.connection.db.admin().ping();
+      res.json({ message: "Database is connected!" });
+    } catch (error) {
+      res.status(500).json({ message: "Database connection failed!", error: error.message });
+    }
+  } else {
+    res.status(500).json({ message: "Database is not connected." });
   }
 });
-
 
 
 //middlewares
