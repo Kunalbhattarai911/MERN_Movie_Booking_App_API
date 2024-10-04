@@ -1,24 +1,18 @@
 import mongoose from "mongoose";
 
-let isConnected; // track the connection status
-
 const dbConnection = async () => {
-  if (isConnected) {
-    console.log("Using existing database connection");
-    return;
+  if (mongoose.connection.readyState >= 1) {
+    return; // Connection is already open.
   }
-
   try {
     await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds
+      socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
     });
-    isConnected = true;
-    console.log("Successfully connected to the database");
+    console.log('Database connected');
   } catch (error) {
-    isConnected = false;
-    console.error("Database connection error:", error);
+    console.error('Database connection error:', error);
   }
 };
 
-export default dbConnection;
+export default dbConnection
