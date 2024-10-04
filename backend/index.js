@@ -8,7 +8,6 @@ import homeRoute from "./src/routes/home.route.js"
 import reviewRoute from "./src/routes/review.route.js"
 import adminRoute from "./src/routes/admin.route.js"
 import dbConnection from "./src/databaseConnection/connectDB.js";
-import { getAllMovies } from "./src/controllers/movie.controller.js";
 dotenv.config();
 
 const app = express();
@@ -25,8 +24,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //Test Route
-app.get("/test", (req, res) => {
-  res.json("Test Success");
+app.get("/", (req, res) => {
+  res.json("Welcome To Movie Booking APP");
 });
 
 //Routes
@@ -37,7 +36,3 @@ app.use("/api/admin", adminRoute)
 app.use("/api/admin/movie", movieRoute)
 app.use("/api/booking", bookingRoute)
 app.use("/api/user/review", reviewRoute)
-
-app.get("/", (req,res) => {
-  res.json(getAllMovies)
-})
