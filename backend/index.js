@@ -8,6 +8,7 @@ import homeRoute from "./src/routes/home.route.js"
 import reviewRoute from "./src/routes/review.route.js"
 import adminRoute from "./src/routes/admin.route.js"
 import dbConnection from "./src/databaseConnection/connectDB.js";
+import mongoose from "mongoose";
 dotenv.config();
 
 const app = express();
