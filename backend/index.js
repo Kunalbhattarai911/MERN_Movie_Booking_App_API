@@ -14,10 +14,26 @@ const app = express();
 
 const PORT = process.env.PORT;
 
-app.listen(PORT, () => {
-  console.log(`Server Is Running On The PORT ${PORT}`);
-  dbConnection();
+app.listen(PORT, async () => {
+  try {
+    await dbConnection();
+    console.log(`Server Is Running On The PORT ${PORT}`);
+  } catch (error) {
+    console.error("Failed to start the server:", error.message);
+    process.exit(1);
+  }
 });
+
+app.get("/test-db", async (req, res) => {
+  try {
+    await mongoose.connection.db.admin().ping();
+    res.json({ message: "Database is connected!" });
+  } catch (error) {
+    res.status(500).json({ message: "Database connection failed!", error: error.message });
+  }
+});
+
+
 
 //middlewares
 app.use(express.json());
